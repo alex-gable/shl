@@ -6,7 +6,7 @@
 # for each team, get the games where that team was home or away
 # add a new team name (shlTeamName) based on home|away Team (sweTeamName)
 # calculate game number
-# add a _schedule column based on shlTeamName and the date2
+# add a _schedule column based on shlTeamName and the date2 (now date)
 get_team_schedule <- function(sweTeamName) {
   shl1819_schedule %>%
     mutate(scheduleTeam = sweTeamName) %>%
@@ -15,15 +15,15 @@ get_team_schedule <- function(sweTeamName) {
       teamLookup %>% select(shlScheduleTeam = shlTeamNames, sweHockeyTeams),
       by = c("scheduleTeam" = "sweHockeyTeams")
     ) %>%
-    arrange(date2) %>% 
+    arrange(date) %>% 
     mutate(gameNumber = row_number(),
-           team_date = paste0(shlScheduleTeam, date2)) %>%
+           team_date = paste0(shlScheduleTeam, date)) %>%
     select(date,
            homeTeam,
            awayTeam,
            combinedTeams,
            Venue,
-           date2,
+           date,
            gameNumber,
            team = shlScheduleTeam,
            team_date) 
